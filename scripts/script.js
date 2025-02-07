@@ -27,6 +27,7 @@ const showInputError = (formElement, inputElement, errorMessage) => {
   };
   
   const toggleButtonState = (inputList, buttonElement) => {
+    console.log(hasInvalidInput(inputList));
     if (hasInvalidInput(inputList)) {
       buttonElement.classList.add("button_inactive");
     } else {
@@ -36,9 +37,14 @@ const showInputError = (formElement, inputElement, errorMessage) => {
   
   const setEventListeners = (formElement) => {
     const inputList = Array.from(formElement.querySelectorAll(".form__input"));
+    const buttonElement = formElement.querySelector(".form__submit");
+  
+    toggleButtonState(inputList, buttonElement);
+  
     inputList.forEach((inputElement) => {
       inputElement.addEventListener("input", function () {
         checkInputValidity(formElement, inputElement);
+        toggleButtonState(inputList, buttonElement);
       });
     });
   };
@@ -50,7 +56,11 @@ const showInputError = (formElement, inputElement, errorMessage) => {
         evt.preventDefault();
       });
   
-      setEventListeners(formElement);
+      const fieldsetList = Array.from(formElement.querySelectorAll(".form__set"));
+  
+      fieldsetList.forEach((fieldset) => {
+        setEventListeners(fieldset);
+      });
     });
   };
   
